@@ -18,3 +18,10 @@ td {
     font-style: italic;
     color:yellow;
 }
+
+.form {
+    display:flex;
+    flex-direction: column;
+    margin:5px;
+ }
+ 

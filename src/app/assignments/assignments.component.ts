@@ -4,34 +4,63 @@ import { CommonModule } from '@angular/common';
 import { RenduDirective } from '../shared/rendu.directive';
 import { NonRenduDirective } from '../shared/non-rendu.directive';
 
+// angular material
+import { MatButtonModule } from '@angular/material/button';
+
+// formulaires et champs de saisie...
+import { FormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {provideNativeDateAdapter} from '@angular/material/core';
+import { Assignment } from './assignment.model';
+
 // Composant qui gère l'affichage d'une liste de devoirs (assignments)
 @Component({
   selector: 'app-assignments',
   standalone: true,
-  imports: [CommonModule, RenduDirective, NonRenduDirective],
+  providers: [provideNativeDateAdapter()],
+  imports: [CommonModule, RenduDirective, NonRenduDirective, MatButtonModule,
+    FormsModule, MatInputModule, MatFormFieldModule, MatDatepickerModule,
+    
+  ],
   templateUrl: './assignments.component.html',
   styleUrl: './assignments.component.css'
 })
-export class AssignmentsComponent {
-  titre = "Liste des devoirs à faire :"
+export class AssignmentsComponent{
+  titre = "Liste des devoirs à faire :";
+  boutonActive = true;
+  // pour le formulaire
+  nomDevoir = '';
+  dateDeRendu = null;
 
-  assignments = [
+  assignments:Assignment[] = [
     {
       nom:"Devoir Angular de Mr Buffa",
-      dateDeRendu: '2024-05-01',
+      dateDeRendu: new Date('2024-05-01'),
       rendu:false
     },
     {
       nom:"Devoir IOS de Mr Edouard",
-      dateDeRendu: '2024-04-02',
+      dateDeRendu: new Date('2024-04-02'),
       rendu:true
     },
     {
       nom:"Devoir Groovy de Mr Galliu",
-      dateDeRendu: '2024-02-12',
+      dateDeRendu: new Date('2024-02-12'),
       rendu:true
     }
   ];
+
+  ngOnInit() {
+    console.log("AVANT AFFICHAGE");
+
+    /*
+    setTimeout(() => {
+      this.boutonActive = true;
+    }, 3000);
+    */
+  }
 
   getColor(a:any) {
     if (a.rendu) {
@@ -39,5 +68,21 @@ export class AssignmentsComponent {
     } else {
       return 'red';
     }
+  }
+
+  onSubmit() {
+     if(this.nomDevoir === '' || this.dateDeRendu === null) return;
+
+    console.log("Bouton cliqué, on ajoute le devoir : " + this.nomDevoir + 
+    " à rendre pour le " + this.dateDeRendu);
+
+    // On crée un nouvel assignment avec les valeurs du formulaire
+    let nouvelAssignment = new Assignment();
+    nouvelAssignment.nom = this.nomDevoir;
+    nouvelAssignment.dateDeRendu = this.dateDeRendu;
+    nouvelAssignment.rendu = false;
+
+    // On ajoute cet assignment au tableau des assignments
+    this.assignments.push(nouvelAssignment);
   }
 }

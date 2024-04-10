@@ -1,5 +1,26 @@
 <h3>{{titre}}</h3>
 
+<form ngForm (submit)="onSubmit(); formAssignments.reset()" class="form" #formAssignments>
+    <mat-form-field>
+        <mat-label>Nom du devoir</mat-label>
+        <input matInput placeholder="Nom du devoir" [(ngModel)]="nomDevoir" name="nom">
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Date de rendu</mat-label>
+        <input matInput [matDatepicker]="picker" [(ngModel)]="dateDeRendu" name="date">
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      
+    <button mat-raised-button color="primary" 
+            [disabled]="!boutonActive"
+    >
+        AddAssignment
+    </button>
+</form>
+
 <!-- affiche avec @for de la liste des assignments -->
 <table>
     <thead>
@@ -10,18 +31,18 @@
         </tr>
     </thead>
     @for(a of assignments; track a.nom) {
-            <tr [ngStyle]="{'color':getColor(a), 'background-color':a.rendu?'lightGreen':'yellow'}">
-                @if(a.rendu) {
-                    <td>{{a.nom}}</td>
-                    <td>{{a.dateDeRendu}}</td>
-                    <td>{{a.rendu}}</td>
-                } @else {
-                    <td>*** {{a.nom}} ***</td>
-                    <td>{{a.dateDeRendu}}</td>
-                    <td>NON RENDU !!!!!!</td>
-                }
-            </tr>
-    } 
+    <tr [ngStyle]="{'color':getColor(a), 'background-color':a.rendu?'lightGreen':'yellow'}">
+        @if(a.rendu) {
+        <td>{{a.nom}}</td>
+        <td>{{a.dateDeRendu}}</td>
+        <td>{{a.rendu}}</td>
+        } @else {
+        <td>*** {{a.nom}} ***</td>
+        <td>{{a.dateDeRendu}}</td>
+        <td>NON RENDU !!!!!!</td>
+        }
+    </tr>
+    }
 </table>
 
 <h3>Avec ngCLass au lieu de ngStyle</h3>
@@ -35,18 +56,18 @@
         </tr>
     </thead>
     @for(a of assignments; track a.nom) {
-            <tr [ngClass]="{'rendu':a.rendu, 'nonRendu':!a.rendu}">
-                @if(a.rendu) {
-                    <td>{{a.nom}}</td>
-                    <td>{{a.dateDeRendu}}</td>
-                    <td>{{a.rendu}}</td>
-                } @else {
-                    <td>*** {{a.nom}} ***</td>
-                    <td>{{a.dateDeRendu}}</td>
-                    <td>NON RENDU !!!!!!</td>
-                }
-            </tr>
-    } 
+    <tr [ngClass]="{'rendu':a.rendu, 'nonRendu':!a.rendu}">
+        @if(a.rendu) {
+        <td>{{a.nom}}</td>
+        <td>{{a.dateDeRendu}}</td>
+        <td>{{a.rendu}}</td>
+        } @else {
+        <td>*** {{a.nom}} ***</td>
+        <td>{{a.dateDeRendu}}</td>
+        <td>NON RENDU !!!!!!</td>
+        }
+    </tr>
+    }
 </table>
 
 <h3>Avec directives custom rendu et nonRendu</h3>
@@ -60,18 +81,18 @@
         </tr>
     </thead>
     @for(a of assignments; track a.nom) {
-            <tr>
-                @if(a.rendu) {
-                    <td appRendu>{{a.nom}}</td>
-                    <td>{{a.dateDeRendu}}</td>
-                    <td>{{a.rendu}}</td>
-                } @else {
-                    <td appNonRendu>*** {{a.nom}} ***</td>
-                    <td>{{a.dateDeRendu}}</td>
-                    <td>NON RENDU !!!!!!</td>
-                }
-            </tr>
-    } 
+    <tr>
+        @if(a.rendu) {
+        <td appRendu>{{a.nom}}</td>
+        <td>{{a.dateDeRendu}}</td>
+        <td>{{a.rendu}}</td>
+        } @else {
+        <td appNonRendu>*** {{a.nom}} ***</td>
+        <td>{{a.dateDeRendu}}</td>
+        <td>NON RENDU !!!!!!</td>
+        }
+    </tr>
+    }
 </table>
 
 <h2>Avec Angular &lt; 17</h2>
@@ -95,11 +116,10 @@
 <h3>Exemple de if else</h3>
 <div *ngFor="let assignment of assignments" [ngStyle]="{'color':getColor(assignment)}">
     <p *ngIf="assignment.rendu; else nonsoumis">
-        Devoir intitulé {{assignment.nom}}, rendu le 
-                                  {{assignment.dateDeRendu}}.
+        Devoir intitulé {{assignment.nom}}, rendu le
+        {{assignment.dateDeRendu}}.
     </p>
     <ng-template #nonsoumis>
         Le devoir {{assignment.nom}} n'a pas été rendu.
     </ng-template>
- </div>
- 
+</div>
