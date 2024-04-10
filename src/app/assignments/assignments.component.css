@@ -1,0 +1,20 @@
+table, tr, td, th {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+td {
+    padding: 20px;
+}
+
+.rendu {
+    background-color: lightgreen;
+}
+
+.nonRendu {
+    background-color: lightcoral;
+    border: 2px dashed purple;
+    font-weight: bold;
+    font-style: italic;
+    color:yellow;
+}

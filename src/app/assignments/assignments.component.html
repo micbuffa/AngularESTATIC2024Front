@@ -1,0 +1,105 @@
+<h3>{{titre}}</h3>
+
+<!-- affiche avec @for de la liste des assignments -->
+<table>
+    <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Date de rendu</th>
+            <th>Rendu</th>
+        </tr>
+    </thead>
+    @for(a of assignments; track a.nom) {
+            <tr [ngStyle]="{'color':getColor(a), 'background-color':a.rendu?'lightGreen':'yellow'}">
+                @if(a.rendu) {
+                    <td>{{a.nom}}</td>
+                    <td>{{a.dateDeRendu}}</td>
+                    <td>{{a.rendu}}</td>
+                } @else {
+                    <td>*** {{a.nom}} ***</td>
+                    <td>{{a.dateDeRendu}}</td>
+                    <td>NON RENDU !!!!!!</td>
+                }
+            </tr>
+    } 
+</table>
+
+<h3>Avec ngCLass au lieu de ngStyle</h3>
+
+<table>
+    <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Date de rendu</th>
+            <th>Rendu</th>
+        </tr>
+    </thead>
+    @for(a of assignments; track a.nom) {
+            <tr [ngClass]="{'rendu':a.rendu, 'nonRendu':!a.rendu}">
+                @if(a.rendu) {
+                    <td>{{a.nom}}</td>
+                    <td>{{a.dateDeRendu}}</td>
+                    <td>{{a.rendu}}</td>
+                } @else {
+                    <td>*** {{a.nom}} ***</td>
+                    <td>{{a.dateDeRendu}}</td>
+                    <td>NON RENDU !!!!!!</td>
+                }
+            </tr>
+    } 
+</table>
+
+<h3>Avec directives custom rendu et nonRendu</h3>
+
+<table>
+    <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Date de rendu</th>
+            <th>Rendu</th>
+        </tr>
+    </thead>
+    @for(a of assignments; track a.nom) {
+            <tr>
+                @if(a.rendu) {
+                    <td appRendu>{{a.nom}}</td>
+                    <td>{{a.dateDeRendu}}</td>
+                    <td>{{a.rendu}}</td>
+                } @else {
+                    <td appNonRendu>*** {{a.nom}} ***</td>
+                    <td>{{a.dateDeRendu}}</td>
+                    <td>NON RENDU !!!!!!</td>
+                }
+            </tr>
+    } 
+</table>
+
+<h2>Avec Angular &lt; 17</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Date de rendu</th>
+            <th>Rendu</th>
+        </tr>
+    </thead>
+    <tr *ngFor="let a of assignments">
+        <td>{{a.nom}}</td>
+        <td>{{a.dateDeRendu}}</td>
+        <td>
+            {{a.rendu}}</td>
+    </tr>
+</table>
+
+<h3>Exemple de if else</h3>
+<div *ngFor="let assignment of assignments" [ngStyle]="{'color':getColor(assignment)}">
+    <p *ngIf="assignment.rendu; else nonsoumis">
+        Devoir intitulé {{assignment.nom}}, rendu le 
+                                  {{assignment.dateDeRendu}}.
+    </p>
+    <ng-template #nonsoumis>
+        Le devoir {{assignment.nom}} n'a pas été rendu.
+    </ng-template>
+ </div>
+ 
