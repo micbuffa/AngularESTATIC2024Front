@@ -19,9 +19,11 @@ td {
     color:yellow;
 }
 
-.form {
-    display:flex;
+.container {
+    display: flex;
     flex-direction: column;
-    margin:5px;
- }
- 
+}
+
+.ajouterBtn {
+    align-self: flex-end;
+}

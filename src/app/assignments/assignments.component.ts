@@ -5,29 +5,23 @@ import { RenduDirective } from '../shared/rendu.directive';
 import { NonRenduDirective } from '../shared/non-rendu.directive';
 
 // angular material
-import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
+import { MatButtonModule } from '@angular/material/button';
 
-// formulaires et champs de saisie...
-import { FormsModule } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {provideNativeDateAdapter} from '@angular/material/core';
+
 import { Assignment } from './assignment.model';
 
 import { AssignmentDetailComponent } from './assignment-detail/assignment-detail.component';
+import { AddAssignmentComponent } from './add-assignment/add-assignment.component';
+import { AnimationKeyframesSequenceMetadata } from '@angular/animations';
 
 // Composant qui gère l'affichage d'une liste de devoirs (assignments)
 @Component({
   selector: 'app-assignments',
   standalone: true,
-  providers: [provideNativeDateAdapter()],
-  imports: [CommonModule, RenduDirective, NonRenduDirective, MatButtonModule,
-    FormsModule, MatInputModule, MatFormFieldModule, MatDatepickerModule,
-    MatListModule,
-    AssignmentDetailComponent
-    
+  imports: [CommonModule, RenduDirective, NonRenduDirective,
+    MatListModule, MatButtonModule,
+    AssignmentDetailComponent, AddAssignmentComponent
   ],
   templateUrl: './assignments.component.html',
   styleUrl: './assignments.component.css'
@@ -35,9 +29,8 @@ import { AssignmentDetailComponent } from './assignment-detail/assignment-detail
 export class AssignmentsComponent{
   titre = "Liste des devoirs à faire :";
   boutonActive = true;
-  // pour le formulaire
-  nomDevoir = '';
-  dateDeRendu = null;
+  formVisible = false;
+  
   // assignment dont on veut le détail
   assignmentSelectionne!:Assignment;
 
@@ -77,24 +70,23 @@ export class AssignmentsComponent{
     }
   }
 
-  onSubmit() {
-     if(this.nomDevoir === '' || this.dateDeRendu === null) return;
-
-    console.log("Bouton cliqué, on ajoute le devoir : " + this.nomDevoir + 
-    " à rendre pour le " + this.dateDeRendu);
-
-    // On crée un nouvel assignment avec les valeurs du formulaire
-    let nouvelAssignment = new Assignment();
-    nouvelAssignment.nom = this.nomDevoir;
-    nouvelAssignment.dateDeRendu = this.dateDeRendu;
-    nouvelAssignment.rendu = false;
-
-    // On ajoute cet assignment au tableau des assignments
-    this.assignments.push(nouvelAssignment);
-  }
-
+  
   assignmentClique(assignment:Assignment) {
     console.log("Assignment cliqué : " + assignment.nom);
     this.assignmentSelectionne = assignment
   }
+
+  onAddAssignmentBtnClick() {
+    console.log("Bouton cliqué pour ajouter un devoir");
+    this.formVisible = true;
+  }
+
+  onAddAssignment(a:Assignment) {
+    // appelée quand le fils a émis l'événement "nouvelAssignment"
+    console.log("Nouvel assignment reçu : " + a.nom);
+    // on le rajoute au tableau
+    this.assignments.push(a);
+    // on cache le formulaire et on re-affiche la liste
+    this.formVisible = false;
+    }
 }

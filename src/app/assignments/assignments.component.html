@@ -1,72 +1,56 @@
 <h3>{{titre}}</h3>
 
-<form ngForm (submit)="onSubmit(); formAssignments.reset()" class="form" #formAssignments>
-    <mat-form-field>
-        <mat-label>Nom du devoir</mat-label>
-        <input matInput placeholder="Nom du devoir" [(ngModel)]="nomDevoir" name="nom">
-    </mat-form-field>
-
-    <mat-form-field>
-        <mat-label>Date de rendu</mat-label>
-        <input matInput [matDatepicker]="picker" [(ngModel)]="dateDeRendu" name="date">
-        <mat-hint>MM/DD/YYYY</mat-hint>
-        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-      </mat-form-field>
-      
-    <button mat-raised-button color="primary" 
-            [disabled]="!boutonActive"
-    >
-        AddAssignment
+<div class="container">
+    @if(formVisible) {
+    <app-add-assignment (nouvelAssignment)="onAddAssignment($event);"></app-add-assignment>
+    } @else {
+    <button mat-flat-button color="accent" 
+            (click)="onAddAssignmentBtnClick()"
+            class="ajouterBtn"
+    > Ajouter Assignment
     </button>
-</form>
-
-<!-- affiche avec @for de la liste des assignments -->
-@if(assignmentSelectionne) {
-    <h3>Assignment sélectionné : {{assignmentSelectionne.nom}}</h3>
-}
-
-<mat-list>
-    @for(a of assignments; track a.nom) {
+    <mat-list>
+        @for(a of assignments; track a.nom) {
         <h3 mat-matSubheader>{{a.dateDeRendu | date:'d/M/yy'}}</h3>
         <mat-list-item (click)="assignmentClique(a)">
             @if(a.rendu) {
-                <p [ngStyle]="{'color':getColor(a)}" matListItemLine>Devoir {{a.nom}} a été rendu</p>
+            <p [ngStyle]="{'color':getColor(a)}" matListItemLine>Devoir {{a.nom}} a été rendu</p>
             } @else {
-                <p [ngStyle]="{'color':getColor(a)}" matListItemLine>Devoir *** {{a.nom}} *** n'a pas été rendu</p>
+            <p [ngStyle]="{'color':getColor(a)}" matListItemLine>Devoir *** {{a.nom}} *** n'a pas été rendu</p>
             }
         </mat-list-item>
         <mat-divider></mat-divider>
-    }
-</mat-list>
-
-<table>
-    <thead>
-        <tr>
-            <th>Nom</th>
-            <th>Date de rendu</th>
-            <th>Rendu</th>
-        </tr>
-    </thead>
-    @for(a of assignments; track a.nom) {
-    <tr [ngStyle]="{'color':getColor(a), 'background-color':a.rendu?'lightGreen':'yellow'}"
-        (click)="assignmentClique(a)"
-    >
-        @if(a.rendu) {
-        <td>{{a.nom}}</td>
-        <td>{{a.dateDeRendu}}</td>
-        <td>{{a.rendu}}</td>
-        } @else {
-        <td>*** {{a.nom}} ***</td>
-        <td>{{a.dateDeRendu}}</td>
-        <td>NON RENDU !!!!!!</td>
         }
-    </tr>
+    </mat-list>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Date de rendu</th>
+                <th>Rendu</th>
+            </tr>
+        </thead>
+        @for(a of assignments; track a.nom) {
+        <tr [ngStyle]="{'color':getColor(a), 'background-color':a.rendu?'lightGreen':'yellow'}"
+            (click)="assignmentClique(a)">
+            @if(a.rendu) {
+            <td>{{a.nom}}</td>
+            <td>{{a.dateDeRendu}}</td>
+            <td>{{a.rendu}}</td>
+            } @else {
+            <td>*** {{a.nom}} ***</td>
+            <td>{{a.dateDeRendu}}</td>
+            <td>NON RENDU !!!!!!</td>
+            }
+        </tr>
+        }
+    </table>
+
+    <app-assignment-detail [assignmentTransmis]="assignmentSelectionne"></app-assignment-detail>
     }
-</table>
 
-<app-assignment-detail [assignmentTransmis]="assignmentSelectionne"></app-assignment-detail>
-
+</div>
 <!--
 <h3>Avec ngCLass au lieu de ngStyle</h3>
 
