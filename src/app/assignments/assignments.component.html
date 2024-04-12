@@ -14,9 +14,9 @@
         <h3 mat-matSubheader>{{a.dateDeRendu | date:'d/M/yy'}}</h3>
         <mat-list-item (click)="assignmentClique(a)">
             @if(a.rendu) {
-            <p [ngStyle]="{'color':getColor(a)}" matListItemLine>Devoir {{a.nom}} a été rendu</p>
+            <p [ngStyle]="{'color':getColor(a)}" >Devoir {{a.nom}} a été rendu</p>
             } @else {
-            <p [ngStyle]="{'color':getColor(a)}" matListItemLine>Devoir *** {{a.nom}} *** n'a pas été rendu</p>
+            <p [ngStyle]="{'color':getColor(a)}">Devoir *** {{a.nom}} *** n'a pas été rendu</p>
             }
         </mat-list-item>
         <mat-divider></mat-divider>
@@ -47,7 +47,10 @@
         }
     </table>
 
-    <app-assignment-detail [assignmentTransmis]="assignmentSelectionne"></app-assignment-detail>
+    <app-assignment-detail [assignmentTransmis]="assignmentSelectionne"
+                            (deleteAssignment)="onDeleteAssignment()"
+    >
+    </app-assignment-detail>
     }
 
 </div>

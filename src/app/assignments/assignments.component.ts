@@ -14,6 +14,7 @@ import { Assignment } from './assignment.model';
 import { AssignmentDetailComponent } from './assignment-detail/assignment-detail.component';
 import { AddAssignmentComponent } from './add-assignment/add-assignment.component';
 import { AnimationKeyframesSequenceMetadata } from '@angular/animations';
+import { AssignmentsService } from '../shared/assignments.service';
 
 // Composant qui gère l'affichage d'une liste de devoirs (assignments)
 @Component({
@@ -34,26 +35,20 @@ export class AssignmentsComponent{
   // assignment dont on veut le détail
   assignmentSelectionne!:Assignment;
 
-  assignments:Assignment[] = [
-    {
-      nom:"Devoir Angular de Mr Buffa",
-      dateDeRendu: new Date('2024-05-01'),
-      rendu:false
-    },
-    {
-      nom:"Devoir IOS de Mr Edouard",
-      dateDeRendu: new Date('2024-04-02'),
-      rendu:true
-    },
-    {
-      nom:"Devoir Groovy de Mr Galliu",
-      dateDeRendu: new Date('2024-02-12'),
-      rendu:true
-    }
-  ];
+  assignments:Assignment[] = [];
+
+  constructor(private assignmentsService:AssignmentsService ) {}
 
   ngOnInit() {
-    console.log("AVANT AFFICHAGE");
+    console.log("AVANT AFFICHAGE, on demande au service les données !");
+
+    // on va initialiser le tableau avec des données
+    this.assignmentsService.getAssignments()
+    .subscribe(assignments => {
+      this.assignments = assignments;
+      console.log("Dans le subscribe, données reçues !")
+    });
+    console.log("APRES APPEL DU SERVICE !");
 
     /*
     setTimeout(() => {
@@ -84,9 +79,23 @@ export class AssignmentsComponent{
   onAddAssignment(a:Assignment) {
     // appelée quand le fils a émis l'événement "nouvelAssignment"
     console.log("Nouvel assignment reçu : " + a.nom);
-    // on le rajoute au tableau
-    this.assignments.push(a);
+    // on demande au service de l'ajouter
+    this.assignmentsService.addAssignment(a)
+    .subscribe(message => {
+      console.log(message);
+    });
+    
     // on cache le formulaire et on re-affiche la liste
     this.formVisible = false;
+    }
+
+    onDeleteAssignment() {
+      // on supprime l'assignement dont on regardait le détail (c'est
+      // celui qui est sélectionné)
+
+      // regarde d'abord sa position dans le tableau
+      let pos = this.assignments.indexOf(this.assignmentSelectionne);
+      // puis on le supprime
+      this.assignments.splice(pos, 1);
     }
 }
