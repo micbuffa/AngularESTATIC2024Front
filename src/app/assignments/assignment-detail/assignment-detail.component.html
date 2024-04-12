@@ -1,0 +1,21 @@
+@if(assignmentTransmis) {
+<mat-card class="example-card">
+    <mat-card-header>
+        <mat-card-title>{{assignmentTransmis.dateDeRendu | date}}</mat-card-title>
+        <mat-card-subtitle>{{assignmentTransmis.nom}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+        <p>
+            Ceci est un devoir très important, que vous devez rendre à l'heure.... blah blah
+        </p>
+    </mat-card-content>
+    <mat-card-actions>
+        @if(!assignmentTransmis.rendu) {
+            <mat-checkbox (click)="onAssignmentRendu()">Rendu</mat-checkbox>
+        }
+
+        <button mat-raised-button color="warn">DELETE</button>
+        <button mat-raised-button color="primary">EDIT</button>
+    </mat-card-actions>
+</mat-card>
+}

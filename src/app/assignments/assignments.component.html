@@ -22,6 +22,24 @@
 </form>
 
 <!-- affiche avec @for de la liste des assignments -->
+@if(assignmentSelectionne) {
+    <h3>Assignment sélectionné : {{assignmentSelectionne.nom}}</h3>
+}
+
+<mat-list>
+    @for(a of assignments; track a.nom) {
+        <h3 mat-matSubheader>{{a.dateDeRendu | date:'d/M/yy'}}</h3>
+        <mat-list-item (click)="assignmentClique(a)">
+            @if(a.rendu) {
+                <p [ngStyle]="{'color':getColor(a)}" matListItemLine>Devoir {{a.nom}} a été rendu</p>
+            } @else {
+                <p [ngStyle]="{'color':getColor(a)}" matListItemLine>Devoir *** {{a.nom}} *** n'a pas été rendu</p>
+            }
+        </mat-list-item>
+        <mat-divider></mat-divider>
+    }
+</mat-list>
+
 <table>
     <thead>
         <tr>
@@ -31,7 +49,9 @@
         </tr>
     </thead>
     @for(a of assignments; track a.nom) {
-    <tr [ngStyle]="{'color':getColor(a), 'background-color':a.rendu?'lightGreen':'yellow'}">
+    <tr [ngStyle]="{'color':getColor(a), 'background-color':a.rendu?'lightGreen':'yellow'}"
+        (click)="assignmentClique(a)"
+    >
         @if(a.rendu) {
         <td>{{a.nom}}</td>
         <td>{{a.dateDeRendu}}</td>
@@ -45,6 +65,9 @@
     }
 </table>
 
+<app-assignment-detail [assignmentTransmis]="assignmentSelectionne"></app-assignment-detail>
+
+<!--
 <h3>Avec ngCLass au lieu de ngStyle</h3>
 
 <table>
@@ -123,3 +146,4 @@
         Le devoir {{assignment.nom}} n'a pas été rendu.
     </ng-template>
 </div>
+-->

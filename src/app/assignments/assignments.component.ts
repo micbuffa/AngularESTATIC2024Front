@@ -6,6 +6,7 @@ import { NonRenduDirective } from '../shared/non-rendu.directive';
 
 // angular material
 import { MatButtonModule } from '@angular/material/button';
+import { MatListModule } from '@angular/material/list';
 
 // formulaires et champs de saisie...
 import { FormsModule } from '@angular/forms';
@@ -15,6 +16,8 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {provideNativeDateAdapter} from '@angular/material/core';
 import { Assignment } from './assignment.model';
 
+import { AssignmentDetailComponent } from './assignment-detail/assignment-detail.component';
+
 // Composant qui gère l'affichage d'une liste de devoirs (assignments)
 @Component({
   selector: 'app-assignments',
@@ -22,6 +25,8 @@ import { Assignment } from './assignment.model';
   providers: [provideNativeDateAdapter()],
   imports: [CommonModule, RenduDirective, NonRenduDirective, MatButtonModule,
     FormsModule, MatInputModule, MatFormFieldModule, MatDatepickerModule,
+    MatListModule,
+    AssignmentDetailComponent
     
   ],
   templateUrl: './assignments.component.html',
@@ -33,6 +38,8 @@ export class AssignmentsComponent{
   // pour le formulaire
   nomDevoir = '';
   dateDeRendu = null;
+  // assignment dont on veut le détail
+  assignmentSelectionne!:Assignment;
 
   assignments:Assignment[] = [
     {
@@ -84,5 +91,10 @@ export class AssignmentsComponent{
 
     // On ajoute cet assignment au tableau des assignments
     this.assignments.push(nouvelAssignment);
+  }
+
+  assignmentClique(assignment:Assignment) {
+    console.log("Assignment cliqué : " + assignment.nom);
+    this.assignmentSelectionne = assignment
   }
 }
