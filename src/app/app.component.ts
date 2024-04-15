@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterOutlet, RouterLink } from '@angular/router';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -11,12 +11,12 @@ import { AssignmentsComponent } from './assignments/assignments.component';
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet, MatButtonModule, MatIconModule, MatDividerModule,
-    AssignmentsComponent
+    AssignmentsComponent, RouterLink
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 
 export class AppComponent {
-  titre="Première application Angular!";
+  titre="Application de gestion des devoirs à rendre !";
 }

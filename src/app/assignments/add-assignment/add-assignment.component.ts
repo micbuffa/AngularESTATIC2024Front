@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
 // formulaires et champs de saisie...
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
@@ -8,6 +8,8 @@ import { MatButtonModule } from '@angular/material/button';
 
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { Assignment } from '../assignment.model';
+import { AssignmentsService } from '../../shared/assignments.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-assignment',
@@ -19,7 +21,9 @@ import { Assignment } from '../assignment.model';
   styleUrl: './add-assignment.component.css'
 })
 export class AddAssignmentComponent {
-  @Output() nouvelAssignment = new EventEmitter<Assignment>();
+  constructor(private assignmentsService:AssignmentsService,
+              private router:Router
+  ) { }
 
   // pour le formulaire
   nomDevoir = '';
@@ -33,13 +37,20 @@ export class AddAssignmentComponent {
 
    // On crée un nouvel assignment avec les valeurs du formulaire
    let a = new Assignment();
+   a.id = Math.round(Math.random()*100000000);
    a.nom = this.nomDevoir;
    a.dateDeRendu = this.dateDeRendu;
    a.rendu = false;
 
    // On ajoute cet assignment au tableau des assignments
-   //this.assignments.push(nouvelAssignment);
-    this.nouvelAssignment.emit(a);
+   // via le service
+    this.assignmentsService.addAssignment(a)
+    .subscribe(message => {
+      console.log(message);
+      // il faudrait cacher maintenant le formulaire et 
+      // afficher la liste des assignments à jour
+      this.router.navigate(['/home']);
+    });
  }
 
 }

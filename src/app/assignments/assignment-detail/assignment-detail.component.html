@@ -9,13 +9,27 @@
             Ceci est un devoir très important, que vous devez rendre à l'heure.... blah blah
         </p>
     </mat-card-content>
-    <mat-card-actions>
+    <mat-card-actions id="bottom">
         @if(!assignmentTransmis.rendu) {
             <mat-checkbox (click)="onAssignmentRendu()">Rendu</mat-checkbox>
         }
 
         <button mat-raised-button color="warn"(click)="onDelete()">DELETE</button>
-        <button mat-raised-button color="primary">EDIT</button>
+        <nav>
+            <!--
+            <button mat-raised-button color="primary" (click)="onClickEdit()">EDIT</button>
+            -->
+            <!--
+            <a [routerLink]="['/assignments', assignmentTransmis.id, 'edit']">
+                <button mat-raised-button color="primary">EDIT</button>
+            </a>
+            -->
+            
+            <a routerLink="/assignments/{{assignmentTransmis.id}}/edit">
+                <button mat-raised-button color="primary">EDIT</button>
+            </a>
+            
+        </nav>
     </mat-card-actions>
 </mat-card>
 }

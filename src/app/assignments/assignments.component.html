@@ -1,28 +1,35 @@
 <h3>{{titre}}</h3>
 
 <div class="container">
-    @if(formVisible) {
-    <app-add-assignment (nouvelAssignment)="onAddAssignment($event);"></app-add-assignment>
-    } @else {
-    <button mat-flat-button color="accent" 
-            (click)="onAddAssignmentBtnClick()"
-            class="ajouterBtn"
-    > Ajouter Assignment
-    </button>
+    <div class="ajouterBtn">
+        <a routerLink="/add">
+            <button mat-flat-button color="accent" 
+            > 
+            Ajouter Assignment
+            </button>
+        </a>
+    </div>
+
     <mat-list>
         @for(a of assignments; track a.nom) {
-        <h3 mat-matSubheader>{{a.dateDeRendu | date:'d/M/yy'}}</h3>
-        <mat-list-item (click)="assignmentClique(a)">
-            @if(a.rendu) {
-            <p [ngStyle]="{'color':getColor(a)}" >Devoir {{a.nom}} a été rendu</p>
-            } @else {
-            <p [ngStyle]="{'color':getColor(a)}">Devoir *** {{a.nom}} *** n'a pas été rendu</p>
-            }
-        </mat-list-item>
+        <nav>
+            <a routerLink="/assignments/{{a.id}}">
+                <h3 mat-matSubheader>{{a.dateDeRendu | date:'d/M/yy'}}, id={{a.id}}</h3>
+                <mat-list-item>
+                    @if(a.rendu) {
+                    <p [ngStyle]="{'color':getColor(a)}" >Devoir {{a.nom}} a été rendu</p>
+                    } @else {
+                    <p [ngStyle]="{'color':getColor(a)}">Devoir *** {{a.nom}} *** n'a pas été rendu</p>
+                    }
+                </mat-list-item>
+            </a>
+        </nav>
+       
         <mat-divider></mat-divider>
         }
     </mat-list>
 
+    <!--
     <table>
         <thead>
             <tr>
@@ -46,13 +53,7 @@
         </tr>
         }
     </table>
-
-    <app-assignment-detail [assignmentTransmis]="assignmentSelectionne"
-                            (deleteAssignment)="onDeleteAssignment()"
-    >
-    </app-assignment-detail>
-    }
-
+-->
 </div>
 <!--
 <h3>Avec ngCLass au lieu de ngStyle</h3>
