@@ -14,7 +14,14 @@
             <mat-checkbox (click)="onAssignmentRendu()">Rendu</mat-checkbox>
         }
 
-        <button mat-raised-button color="warn"(click)="onDelete()">DELETE</button>
+        <button mat-raised-button 
+                color="warn" 
+                (click)="onDelete()"  
+                [disabled]="!isAdmin()"
+        >
+            DELETE
+        </button>
+        
         <nav>
             <!--
             <button mat-raised-button color="primary" (click)="onClickEdit()">EDIT</button>
@@ -26,7 +33,12 @@
             -->
             
             <a routerLink="/assignments/{{assignmentTransmis.id}}/edit">
-                <button mat-raised-button color="primary">EDIT</button>
+                <button mat-raised-button 
+                        color="primary"
+                        [disabled]="!isAdmin()"
+                >
+                        EDIT
+                </button>
             </a>
             
         </nav>
