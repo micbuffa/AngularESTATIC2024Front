@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Assignment } from '../assignments/assignment.model';
-import { Observable, of } from 'rxjs';
+import { Observable, forkJoin, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { bdInitialAssignments } from './data';
 
@@ -17,12 +17,12 @@ export class AssignmentsService {
   /**
    *  Renvoie tous les assignments 
    */
-  getAssignments():Observable<Assignment[]> {
+  getAssignments(page:number, limit:number):Observable<any> {
     // On envoit une requête au back-end, qui lui-même
     // ira chercher les données dans la base de données
     // située dans le cloud
 
-    return this.http.get<Assignment[]>(this.backendUrl);
+    return this.http.get<any>(this.backendUrl+'?page='+page+'&limit='+limit);
   }
 
   /**
@@ -67,7 +67,7 @@ export class AssignmentsService {
     return this.http.delete<any>(this.backendUrl + '/' + assignment?._id);
   }
 
-  peuplerBD() {
+  peuplerBDNaive() {
     bdInitialAssignments.forEach(a => {
       let newAssignment = new Assignment();
       newAssignment.nom = a.nom;
@@ -79,4 +79,22 @@ export class AssignmentsService {
       });
     });
   }
+
+  peuplerBDavecForkJoin():Observable<any> {
+    let appelsVersAddAssignment:Observable<any>[] = [];
+ 
+    bdInitialAssignments.forEach(a => {
+      const nouvelAssignment = new Assignment();
+      nouvelAssignment.nom = a.nom;
+      nouvelAssignment.dateDeRendu = new Date(a.dateDeRendu);
+      nouvelAssignment.rendu = a.rendu;
+ 
+      appelsVersAddAssignment.push(this.addAssignment(nouvelAssignment))
+    });
+ 
+    // On attend que tous les appels soient terminés
+    return forkJoin(appelsVersAddAssignment);
+  }
+ 
+ 
 }
