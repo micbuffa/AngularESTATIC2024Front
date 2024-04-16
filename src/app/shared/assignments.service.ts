@@ -1,34 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Assignment } from '../assignments/assignment.model';
 import { Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AssignmentsService {
-  assignments:Assignment[] = [
-    {
-      id:1,
-      nom:"Devoir Angular de Mr Buffa",
-      dateDeRendu: new Date('2024-05-01'),
-      rendu:false
-    },
-    {
-      id:2,
-      nom:"Devoir IOS de Mr Edouard",
-      dateDeRendu: new Date('2024-04-02'),
-      rendu:true
-    },
-    {
-      id:3,
-      nom:"Devoir Groovy de Mr Galliu",
-      dateDeRendu: new Date('2024-02-12'),
-      rendu:true
-    }
-  ];
- 
-  constructor() { }
+  constructor(private http:HttpClient) { }
 
+  assignments:Assignment[] = [];
+  backendUrl = 'http://localhost:8010/api/assignments';
+ 
   /**
    *  Renvoie tous les assignments 
    */
@@ -37,7 +20,7 @@ export class AssignmentsService {
     // ira chercher les données dans la base de données
     // située dans le cloud
 
-    return of(this.assignments);
+    return this.http.get<Assignment[]>(this.backendUrl);
   }
 
   /**
@@ -47,9 +30,10 @@ export class AssignmentsService {
    */
   getAssignment(id:number):Observable<Assignment|undefined> {
     // renvoie l'assignment avec l'id passé en paramètre
-    const a:Assignment|undefined = this.assignments.find(a => a.id === id);
+    //const a:Assignment|undefined = this.assignments.find(a => a.id === id);
 
-    return of(a);
+    //return of(a);
+    return this.http.get<Assignment>(this.backendUrl + '/' + id);
   }
 
   addAssignment(assignment:Assignment):Observable<string> {
