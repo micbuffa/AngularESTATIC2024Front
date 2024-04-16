@@ -37,7 +37,6 @@ export class AddAssignmentComponent {
 
    // On crée un nouvel assignment avec les valeurs du formulaire
    let a = new Assignment();
-   a.id = Math.round(Math.random()*100000000);
    a.nom = this.nomDevoir;
    a.dateDeRendu = this.dateDeRendu;
    a.rendu = false;

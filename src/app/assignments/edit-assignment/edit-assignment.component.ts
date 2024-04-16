@@ -38,7 +38,7 @@ export class EditAssignmentComponent {
 
   ngOnInit() {
     // on récupère l'id dans l'URL
-    const id = +this.route.snapshot.params['id'];
+    const id = this.route.snapshot.params['id'];
 
     // on utilise le service pour récupérer l'assignment par id
     this.assignmentsService.getAssignment(id)
@@ -63,10 +63,13 @@ export class EditAssignmentComponent {
       .updateAssignment(this.assignment)
       .subscribe((message) => {
         console.log(message);
- 
-        // navigation vers la home page
-        this.router.navigate(['/home']);
+        // navigation vers la home page, important que ce soit
+        // dans le subscribe pour être sûr que la mise à jour
+        // de l'assignment est terminée
+       this.router.navigate(['/home']);
+       console.log("ON NAVIGUE VERS HOME !")
       });
+       
   }
  }
  

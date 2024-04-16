@@ -13,8 +13,8 @@
     <mat-list>
         @for(a of assignments; track a.nom) {
         <nav>
-            <a routerLink="/assignments/{{a.id}}">
-                <h3 mat-matSubheader>{{a.dateDeRendu | date:'d/M/yy'}}, id={{a.id}}</h3>
+            <a routerLink="/assignments/{{a._id}}">
+                <h3 mat-matSubheader>{{a.dateDeRendu | date:'d/M/yy'}}</h3>
                 <mat-list-item>
                     @if(a.rendu) {
                     <p [ngStyle]="{'color':getColor(a)}" >Devoir {{a.nom}} a été rendu</p>

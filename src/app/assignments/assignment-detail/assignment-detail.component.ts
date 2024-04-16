@@ -34,7 +34,7 @@ export class AssignmentDetailComponent {
     // on va récupérer l'id dans l'URL
     // le + est là pour convertir en nombre l'id pris dans l'URL,
     // qui est une chaine de caractères
-    const id = +this.route.snapshot.params['id'];
+    const id = this.route.snapshot.params['id'];
 
     // on utilise le service pour récupérer l'assignment avec cet id
     this.assignementsService.getAssignment(id)

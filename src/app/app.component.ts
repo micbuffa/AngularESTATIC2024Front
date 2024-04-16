@@ -8,6 +8,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 import { AssignmentsComponent } from './assignments/assignments.component';
 import { AuthService } from './shared/auth.service';
+import { AssignmentsService } from './shared/assignments.service';
 
 @Component({
   selector: 'app-root',
@@ -23,6 +24,7 @@ export class AppComponent {
   titre="Application de gestion des devoirs à rendre !";
 
   constructor(private authService:AuthService, 
+              private assignmentsService:AssignmentsService,
               private router:Router
   ) {}
 
@@ -35,5 +37,9 @@ export class AppComponent {
       // et on navigue vers la page d'accueil
       this.router.navigate(['/home']);
     }
+  }
+
+  genereDonnesDeTest() {
+    this.assignmentsService.peuplerBD();
   }
 }
