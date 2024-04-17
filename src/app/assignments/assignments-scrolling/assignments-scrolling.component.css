@@ -1,0 +1,9 @@
+.example-viewport {
+    height: 400px;
+    width: 800px;
+    border: 1px solid black;
+  }
+  
+  .example-item {
+    height: 150px;
+  }

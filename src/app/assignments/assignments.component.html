@@ -29,6 +29,18 @@
         <button mat-raised-button color="primary" (click)="dernierePage()">Dernière page</button>
     </div>
 
+    
+    <mat-paginator #paginator
+               class="demo-paginator"
+               (page)="handlePageEvent($event)"
+               [length]="totalDocs"
+               [pageSize]="limit"
+               [showFirstLastButtons]="true"
+               [pageSizeOptions]="pageSizeOptions"
+               [pageIndex]="page-1"
+               aria-label="Select page">
+    </mat-paginator>
+
     <table mat-table [dataSource]="assignments" class="mat-elevation-z8 demo-table">
         <!-- Nom Column -->
         <ng-container matColumnDef="nom">

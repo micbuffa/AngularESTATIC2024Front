@@ -1,0 +1,20 @@
+<mat-list>
+    <cdk-virtual-scroll-viewport itemSize="50" class="example-viewport" #scroller>
+        <div *cdkVirtualFor="let a of assignments">
+            <nav>
+                <a routerLink="/assignments/{{a._id}}">
+                    <h3 mat-matSubheader>{{a.dateDeRendu | date:'d/M/yy'}}</h3>
+                    <mat-list-item>
+                        @if(a.rendu) {
+                        <p [ngStyle]="{'color':getColor(a)}">Devoir {{a.nom}} a été rendu</p>
+                        } @else {
+                        <p [ngStyle]="{'color':getColor(a)}">Devoir *** {{a.nom}} *** n'a pas été rendu</p>
+                        }
+                    </mat-list-item>
+                 </a>
+            </nav>
+
+            <mat-divider></mat-divider>
+        </div>
+    </cdk-virtual-scroll-viewport>
+</mat-list>

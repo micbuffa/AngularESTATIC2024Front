@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Assignment } from '../assignments/assignment.model';
-import { Observable, forkJoin, of } from 'rxjs';
+import { Observable, catchError, forkJoin, map, of, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { bdInitialAssignments } from './data';
 
@@ -36,8 +36,29 @@ export class AssignmentsService {
     //const a:Assignment|undefined = this.assignments.find(a => a.id === id);
 
     //return of(a);
-    return this.http.get<Assignment>(this.backendUrl + '/' + id);
+    return this.http.get<Assignment>(this.backendUrl + '/' + id)
+    .pipe(
+      tap(a => console.log('Dans le TAP rxjs AVANT MAP ' + a.nom)),
+      map(a => { a.nom += " MODIFIE PAR MAP"; return a;}),
+      tap(a => console.log('Dans le TAP rxjs APRES MAP' + a.nom)),
+      catchError(this.handleError<any>('### catchError: getAssignments by id avec id=' + id))
+    );
   }
+
+  private handleError<T>(operation: any, result?: T) {
+    return (error: any): Observable<T> => {
+      // a partir du moment où on a une erreur, on peut la gérer ici
+      // ici je fais des console.log mais on pourrait faire un
+      // router.navigate vers une page d'erreur par exemple
+      // ou afficher un message d'erreur à l'utilisateur
+
+      console.log(error); // pour afficher dans la console
+      console.log(operation + ' a échoué ' + error.message);
+ 
+      return of(result as T);
+    }
+ };
+ 
 
   addAssignment(assignment:Assignment):Observable<any> {
     //this.assignments.push(assignment);

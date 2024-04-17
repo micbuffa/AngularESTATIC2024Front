@@ -12,6 +12,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatTableModule } from '@angular/material/table';
+import {PageEvent, MatPaginatorModule} from '@angular/material/paginator';
 
 
 import { RouterLink } from '@angular/router';
@@ -29,7 +30,7 @@ import { AssignmentsService } from '../shared/assignments.service';
   imports: [CommonModule, RenduDirective, NonRenduDirective,
     MatListModule, MatButtonModule, RouterLink, MatInputModule,
     MatFormFieldModule, MatSliderModule, FormsModule, MatTableModule,
-    AssignmentDetailComponent, AddAssignmentComponent
+    AssignmentDetailComponent, AddAssignmentComponent, MatPaginatorModule
   ],
   templateUrl: './assignments.component.html',
   styleUrl: './assignments.component.css'
@@ -37,6 +38,7 @@ import { AssignmentsService } from '../shared/assignments.service';
 export class AssignmentsComponent {
   titre = "Liste des devoirs à faire :";
   displayedColumns: string[] = ['nom', 'dateDeRendu', 'rendu'];
+  pageSizeOptions = [5, 10, 25, 50, 100];
 
   assignments: Assignment[] = [];
   totalDocs =0;
@@ -107,6 +109,17 @@ export class AssignmentsComponent {
 
   dernierePage() {
     this.page = this.totalPages;
+    this.getAssignments();
+  }
+
+  // Pour le paginator
+  handlePageEvent(e: PageEvent) {
+    //this.pageEvent = e;
+    //this.totalPages = e.length;
+    this.limit = e.pageSize;
+    this.page = e.pageIndex+1;
+
+    console.log("Dans handlePageEvent, page=" + this.page + " limit=" + this.limit)
     this.getAssignments();
   }
 }
