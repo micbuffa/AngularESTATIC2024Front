@@ -12,7 +12,8 @@ export class AssignmentsService {
   constructor(private http:HttpClient) { }
 
   assignments:Assignment[] = [];
-  backendUrl = 'http://localhost:8010/api/assignments';
+  //backendUrl = 'http://localhost:8010/api/assignments';
+  backendUrl = 'https://angularestatic2024back.onrender.com/api/assignments';
  
   /**
    *  Renvoie tous les assignments 

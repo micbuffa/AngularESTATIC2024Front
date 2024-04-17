@@ -27,3 +27,42 @@ td {
 .ajouterBtn {
     align-self: flex-end;
 }
+
+#divPagination {
+    width:700px;
+    display: flex;
+    flex-direction: row;
+    /* espace entre les fils constant */
+    justify-content: space-between;    
+}
+
+.demo-table {
+    width: 100%;
+}
+  
+  .mat-column-nom {
+    border-right: 1px solid currentColor;
+    padding-right: 24px;
+    padding-left: 24px;
+    text-align: left;
+    font-size: 20px;
+
+  }
+  
+  .mat-column-dateDeRendu {
+    width: 132px;
+    padding-left: 16px;
+    font-size: 20px;
+  }
+  
+  .mat-column-rendu {
+    font-style: italic;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+    width: 60px;
+
+
+  }
+  
+ 

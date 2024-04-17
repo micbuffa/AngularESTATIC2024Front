@@ -1,4 +1,16 @@
 <h3>{{titre}}</h3>
+<p>Nombre d'assignments : {{totalDocs}}, Nb pages : {{totalPages}}</p>
+<p>Page courante : {{page}}, limit : {{limit}}</p>
+<p>Nb assignments par page : 
+
+<!-- add slider for adjusting the limit property, with angular 17 -->
+<mat-slider min="1" max="100" step="1" thumbLabel>
+    <input
+      matSliderThumb
+      [(ngModel)]="limit"
+      (change)="getAssignments()"
+    />
+  </mat-slider>
 
 <div class="container">
     <div class="ajouterBtn">
@@ -9,6 +21,38 @@
             </button>
         </a>
     </div>
+
+    <div id="divPagination">
+        <button mat-raised-button color="primary" (click)="premierePage()">Première page</button>
+        <button mat-raised-button color="primary" [disabled]="page===1" (click)="pagePrecedente()">Page precedente</button>
+        <button mat-raised-button color="primary" [disabled]="page===totalPages" (click)="pageSuivante()">Page suivante</button>
+        <button mat-raised-button color="primary" (click)="dernierePage()">Dernière page</button>
+    </div>
+
+    <table mat-table [dataSource]="assignments" class="mat-elevation-z8 demo-table">
+        <!-- Nom Column -->
+        <ng-container matColumnDef="nom">
+          <th mat-header-cell *matHeaderCellDef> Nom </th>
+          <td mat-cell *matCellDef="let element"> {{element.nom}} </td>
+        </ng-container>
+      
+        <!-- dateDeRendu Column -->
+        <ng-container matColumnDef="dateDeRendu">
+          <th mat-header-cell *matHeaderCellDef> Date de rendu </th>
+          <td mat-cell *matCellDef="let element"> {{element.dateDeRendu | date:'d/M/yy'}} </td>
+        </ng-container>
+      
+        <!-- rendu Column -->
+        <ng-container matColumnDef="rendu">
+          <th mat-header-cell *matHeaderCellDef> Rendu </th>
+          <td mat-cell *matCellDef="let element"> {{element.rendu}} </td>
+        </ng-container>
+      
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+
 
     <mat-list>
         @for(a of assignments; track a.nom) {
@@ -40,7 +84,7 @@
         </thead>
         @for(a of assignments; track a.nom) {
         <tr [ngStyle]="{'color':getColor(a), 'background-color':a.rendu?'lightGreen':'yellow'}"
-            (click)="assignmentClique(a)">
+            >
             @if(a.rendu) {
             <td>{{a.nom}}</td>
             <td>{{a.dateDeRendu}}</td>
